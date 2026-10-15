@@ -1,0 +1,3 @@
+Terrain photographs: Poly Haven (https://polyhaven.com), license CC0 (public domain).
+grass = rocky_terrain_02, dry = aerial_grass_rock, dirt = dirt_aerial_02, rock = aerial_rocks_02,
+sand = aerial_beach_01, snow = snow_field_aerial, ground = forrest_ground_01 (2K diffuse + OpenGL normal).
