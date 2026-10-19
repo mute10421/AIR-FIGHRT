@@ -8,4 +8,6 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/AirFight/Scenes/AirFight.unity
     guid: 54bf29479cd0ba842a9e9fddfb439b1d
-  m_configObjects: {}
+  m_configObjects:
+    com.unity.xr.management.loader_settings: {fileID: 11400000, guid: 9e65fffd622a0be43a40a68ba92bf4e4, type: 2}
+    com.unity.xr.openxr.settings4: {fileID: 11400000, guid: 1764822669e4a4f41a39fc95f8084abd, type: 2}

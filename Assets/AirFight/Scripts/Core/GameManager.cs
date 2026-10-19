@@ -351,7 +351,7 @@ namespace AirFight
         float reparkAt = -1f;
         /// <summary>FFA: everyone on a different airfield. Team battle: BLUE from the south base, RED from the north.</summary>
         // team bases: BLUE in the south, RED in the north — several airfields each, so teammates never share a runway
-        static readonly int[] BlueBases = { 0, 6, 7, 1, 4 }, RedBases = { 2, 5, 8, 3 };
+        static readonly int[] BlueBases = { 4, 0, 6, 7, 1 }, RedBases = { 2, 5, 8, 3 };
 
         /// <summary>
         /// My own airfield: FFA = one airfield per pilot, team battle = one of my team's airfields. The pick follows my
@@ -362,7 +362,12 @@ namespace AirFight
             var aps = WorldBuilder.Airports;
             var list = new List<int>();
             if (Net.TeamMode) { foreach (int i in Net.MyTeam == 0 ? BlueBases : RedBases) if (i < aps.Length) list.Add(i); }
-            else for (int i = 0; i < aps.Length; i++) list.Add(i);
+            else
+            {
+                // FFA: airfields nearest the middle of the map first → shorter flight to the fight
+                for (int i = 0; i < aps.Length; i++) list.Add(i);
+                list.Sort((a, b) => aps[a].center.sqrMagnitude.CompareTo(aps[b].center.sqrMagnitude));
+            }
             // slot from my network id (unique per pilot; team mates' ids step by 2) → known instantly on joining,
             // no need to wait for the others' positions
             int rank = (int)(Net.TeamMode ? Net.MyId / 2 : Net.MyId);
@@ -400,8 +405,7 @@ namespace AirFight
         {
             if (Menu && Menu.IsOpen) Menu.Close();
             if (Map && Map.IsOpen) Map.Close();
-            ParkAtBase();                                       // revive / rearm / refuel
-            MultiplayerAirStart(false);                         // then straight into the arena
+            ParkAtBase();                                       // revive / rearm / refuel, lined up on my runway
             mpStartTime = Time.time;
             Banner($"MATCH START — {Net.ModeName}{(Net.TeamMode ? " — TEAM " + NetSession.TeamName(Net.MyTeam) : "")} — {Net.RoomMinutes} MIN", 6f);
         }
